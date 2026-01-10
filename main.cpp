@@ -26,10 +26,8 @@ void print_usage() {
                << L"Usage: toasty <message> [options]\n\n"
                << L"Options:\n"
                << L"  -t, --title <text>   Set notification title (default: \"Notification\")\n"
-               << L"  -h, --help           Show this help\n"
-               << L"  --register           Register app for notifications (run once)\n\n"
+               << L"  -h, --help           Show this help\n\n"
                << L"Examples:\n"
-               << L"  toasty --register\n"
                << L"  toasty \"Build completed\"\n"
                << L"  toasty \"Task done\" -t \"Claude Code\"\n";
 }
