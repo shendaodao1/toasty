@@ -1,6 +1,6 @@
 # Toasty
 
-A tiny Windows toast notification CLI. 229 KB, no dependencies.
+A tiny Windows toast notification CLI that knows how to hook into Coding Agents so you get notified when their long running tasks are finished. 229 KB, no dependencies.
 
 ## Quick Start
 
