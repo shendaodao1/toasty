@@ -60,13 +60,20 @@ std::wstring extract_icon_to_temp(int resourceId) {
     tempPath /= fileName;
     
     // Write resource data to temp file
-    std::ofstream file(tempPath, std::ios::binary);
-    if (!file) return L"";
-    
-    file.write(static_cast<const char*>(pLockedResource), resourceSize);
-    file.close();
-    
-    return tempPath.wstring();
+    try {
+        std::ofstream file(tempPath, std::ios::binary);
+        if (!file) return L"";
+        
+        file.write(static_cast<const char*>(pLockedResource), resourceSize);
+        file.close();
+        
+        if (file.fail()) return L"";
+        
+        return tempPath.wstring();
+    } catch (...) {
+        // Failed to write icon file
+        return L"";
+    }
 }
 
 // Find preset by name (case-insensitive)
@@ -288,11 +295,16 @@ int wmain(int argc, wchar_t* argv[]) {
             if (i + 1 < argc) {
                 iconPath = argv[++i];
                 // Convert relative path to absolute
-                std::filesystem::path p(iconPath);
-                if (!p.is_absolute()) {
-                    p = std::filesystem::absolute(p);
+                try {
+                    std::filesystem::path p(iconPath);
+                    if (!p.is_absolute()) {
+                        p = std::filesystem::absolute(p);
+                    }
+                    iconPath = p.wstring();
+                } catch (const std::filesystem::filesystem_error& e) {
+                    std::wcerr << L"Warning: Could not resolve icon path, using as-is\n";
+                    // iconPath already set, continue with original path
                 }
-                iconPath = p.wstring();
             } else {
                 std::wcerr << L"Error: --icon requires an argument\n";
                 return 1;
