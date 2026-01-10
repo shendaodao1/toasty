@@ -3,6 +3,9 @@
 // Application icon (must be first/lowest ID for Windows)
 #define IDI_APPICON  1
 
+// Default toasty icon (used when no AI agent detected)
+#define IDI_TOASTY   100
+
 // AI agent icon resource IDs
 #define IDI_CLAUDE   101
 #define IDI_COPILOT  102

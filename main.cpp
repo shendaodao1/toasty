@@ -1142,6 +1142,9 @@ int wmain(int argc, wchar_t* argv[]) {
     if (autoPreset) {
         title = autoPreset->title;
         iconPath = extract_icon_to_temp(autoPreset->iconResourceId);
+    } else {
+        // No AI agent detected - use toasty mascot as default icon
+        iconPath = extract_icon_to_temp(IDI_TOASTY);
     }
 
     for (int i = 1; i < argc; i++) {

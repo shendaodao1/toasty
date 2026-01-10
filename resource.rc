@@ -4,6 +4,7 @@
 IDI_APPICON  ICON "icons/toasty.ico"
 
 // PNG icons embedded as RCDATA
+IDI_TOASTY   RCDATA "icons/toasty.png"
 IDI_CLAUDE   RCDATA "icons/claude.png"
 IDI_COPILOT  RCDATA "icons/copilot.png"
 IDI_GEMINI   RCDATA "icons/gemini.png"
