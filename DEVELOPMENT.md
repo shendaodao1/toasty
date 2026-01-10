@@ -54,7 +54,7 @@ Windows toast notifications require an AppUserModelId (AUMID) to identify the se
 2. The shortcut must have the `System.AppUserModel.ID` property set
 3. The AUMID used in code must match the shortcut's property
 
-The `--register` flag creates this shortcut at:
+Toasty automatically creates this shortcut on first use at:
 ```
 %APPDATA%\Microsoft\Windows\Start Menu\Programs\Toasty.lnk
 ```
@@ -93,7 +93,7 @@ main.cpp
 
 ### Notifications not appearing
 
-1. Run `toasty --register` first
+1. Toasty auto-registers on first use
 2. Check Windows Settings > System > Notifications > Toasty is enabled
 3. Check Focus Assist / Do Not Disturb is off
 

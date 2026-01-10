@@ -25,7 +25,6 @@ Options:
   --install [agent]    Install hooks for AI CLI agents (claude, gemini, copilot, or all)
   --uninstall          Remove hooks from all AI CLI agents
   --status             Show installation status
-  --register           Register app for notifications (run once)
 ```
 
 ## AI CLI Auto-Detection
