@@ -1,1 +1,0 @@
-{"version":1,"hooks":{"sessionEnd":[{"type":"command","bash":"toasty 'Copilot finished' -t 'GitHub Copilot'","powershell":"D:\\\\github\\\\toasty-pr14\\\\build\\\\Release\\\\toasty.exe 'Copilot finished' -t 'GitHub Copilot'","timeoutSec":5}]}}
