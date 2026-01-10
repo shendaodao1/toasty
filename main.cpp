@@ -1495,8 +1495,43 @@ int wmain(int argc, wchar_t* argv[]) {
         // Detach from console entirely to prevent flash
         FreeConsole();
 
-        bool result = focus_console_window();
-        return result ? 0 : 1;
+        // Protocol handlers have focus restrictions - use aggressive approach
+        HWND targetWnd = get_saved_console_window_handle();
+        if (!targetWnd) {
+            // Fallback: find any terminal window
+            EnumWindows([](HWND hwnd, LPARAM lParam) -> BOOL {
+                wchar_t className[256];
+                GetClassNameW(hwnd, className, 256);
+                if (IsWindowVisible(hwnd) &&
+                    (wcscmp(className, L"CASCADIA_HOSTING_WINDOW_CLASS") == 0 ||
+                     wcscmp(className, L"ConsoleWindowClass") == 0)) {
+                    *(HWND*)lParam = hwnd;
+                    return FALSE;
+                }
+                return TRUE;
+            }, (LPARAM)&targetWnd);
+        }
+
+        if (targetWnd) {
+            // Simulate user input to bypass focus restrictions
+            INPUT input = {0};
+            input.type = INPUT_MOUSE;
+            SendInput(1, &input, sizeof(INPUT));
+
+            // Restore if minimized
+            if (IsIconic(targetWnd)) {
+                ShowWindow(targetWnd, SW_RESTORE);
+            }
+
+            // Try SwitchToThisWindow (works better for protocol handlers)
+            SwitchToThisWindow(targetWnd, TRUE);
+
+            // Also try standard approach
+            force_foreground_window(targetWnd);
+            return 0;
+        }
+
+        return 1;
     }
 
     if (doRegister) {
@@ -1527,6 +1562,22 @@ int wmain(int argc, wchar_t* argv[]) {
         // Save the terminal window handle for click-to-focus
         // Walk process tree to find the actual terminal/IDE window
         HWND terminalWnd = find_ancestor_window();
+
+        // Fallback: if process tree didn't find a window, search for any terminal
+        if (!terminalWnd) {
+            EnumWindows([](HWND hwnd, LPARAM lParam) -> BOOL {
+                wchar_t className[256];
+                GetClassNameW(hwnd, className, 256);
+                if (IsWindowVisible(hwnd) &&
+                    (wcscmp(className, L"CASCADIA_HOSTING_WINDOW_CLASS") == 0 ||
+                     wcscmp(className, L"ConsoleWindowClass") == 0)) {
+                    *(HWND*)lParam = hwnd;
+                    return FALSE;
+                }
+                return TRUE;
+            }, (LPARAM)&terminalWnd);
+        }
+
         if (terminalWnd) {
             save_console_window_handle(terminalWnd);
         }
