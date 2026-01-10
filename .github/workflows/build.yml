@@ -3,57 +3,69 @@ name: Build
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        arch: [x64, ARM64]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure CMake
-        run: cmake -S . -B build -G "Visual Studio 17 2022" -A ${{ matrix.arch }}
+      - name: Build x64
+        run: |
+          cmake -S . -B build-x64 -G "Visual Studio 17 2022" -A x64
+          cmake --build build-x64 --config Release
 
-      - name: Build
-        run: cmake --build build --config Release
+      - name: Build ARM64
+        run: |
+          cmake -S . -B build-arm64 -G "Visual Studio 17 2022" -A ARM64
+          cmake --build build-arm64 --config Release
 
-      - name: Upload artifact
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Sign executables with Trusted Signing
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://wus2.codesigning.azure.net/
+          trusted-signing-account-name: hanselman
+          certificate-profile-name: WindowsEdgeLight
+          files-folder: ${{ github.workspace }}
+          files-folder-filter: exe
+          files-folder-recurse: true
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Prepare release artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifacts -Force
+          Copy-Item "build-x64/Release/toasty.exe" -Destination "artifacts/toasty-x64.exe"
+          Copy-Item "build-arm64/Release/toasty.exe" -Destination "artifacts/toasty-arm64.exe"
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: toasty-${{ matrix.arch }}
-          path: build/Release/toasty.exe
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download x64
-        uses: actions/download-artifact@v4
-        with:
-          name: toasty-x64
-          path: x64
-
-      - name: Download ARM64
-        uses: actions/download-artifact@v4
-        with:
-          name: toasty-ARM64
-          path: arm64
-
-      - name: Rename binaries
-        run: |
-          mv x64/toasty.exe toasty-x64.exe
-          mv arm64/toasty.exe toasty-arm64.exe
+          name: toasty-signed
+          path: artifacts/*.exe
 
       - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            toasty-x64.exe
-            toasty-arm64.exe
+            artifacts/toasty-x64.exe
+            artifacts/toasty-arm64.exe
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

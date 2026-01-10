@@ -278,7 +278,6 @@ void print_usage() {
                << L"Note: Toasty auto-detects known parent processes (Claude, Copilot, etc.)\n"
                << L"      and applies the appropriate preset automatically. Use --app to override.\n\n"
                << L"Examples:\n"
-               << L"  toasty --register\n"
                << L"  toasty \"Build completed\"\n"
                << L"  toasty \"Task done\" -t \"Custom Title\"\n"
                << L"  toasty \"Analysis complete\" --app claude\n"
