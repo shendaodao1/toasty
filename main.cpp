@@ -897,26 +897,28 @@ void handle_install(const std::wstring& agent) {
     }
     
     bool installAll = agent.empty() || agent == L"all";
+    bool explicitAgent = !installAll;  // User explicitly named an agent
     bool installClaude = installAll || agent == L"claude";
     bool installGemini = installAll || agent == L"gemini";
     bool installCopilot = installAll || agent == L"copilot";
-    
+
     std::wcout << L"Detecting AI CLI agents...\n";
-    
+
     bool claudeDetected = detect_claude();
     bool geminiDetected = detect_gemini();
     bool copilotDetected = detect_copilot();
-    
+
     std::wcout << L"  " << (claudeDetected ? L"[x]" : L"[ ]") << L" Claude Code found\n";
     std::wcout << L"  " << (geminiDetected ? L"[x]" : L"[ ]") << L" Gemini CLI found\n";
     std::wcout << L"  " << (copilotDetected ? L"[x]" : L"[ ]") << L" GitHub Copilot (in current repo)\n";
     std::wcout << L"\n";
-    
+
     std::wcout << L"Installing toasty hooks...\n";
-    
+
     bool anyInstalled = false;
-    
-    if (installClaude && claudeDetected) {
+
+    // If user explicitly named an agent, install even if not detected
+    if (installClaude && (claudeDetected || explicitAgent)) {
         if (install_claude(exePath)) {
             std::wcout << L"  [x] Claude Code: Added Stop hook\n";
             anyInstalled = true;
@@ -925,7 +927,7 @@ void handle_install(const std::wstring& agent) {
         }
     }
     
-    if (installGemini && geminiDetected) {
+    if (installGemini && (geminiDetected || explicitAgent)) {
         if (install_gemini(exePath)) {
             std::wcout << L"  [x] Gemini CLI: Added AfterAgent hook\n";
             anyInstalled = true;
@@ -934,7 +936,7 @@ void handle_install(const std::wstring& agent) {
         }
     }
     
-    if (installCopilot && copilotDetected) {
+    if (installCopilot && (copilotDetected || explicitAgent)) {
         if (install_copilot(exePath)) {
             std::wcout << L"  [x] GitHub Copilot: Added sessionEnd hook\n";
             std::wcout << L"      Note: This is repo-level only, not global\n";
